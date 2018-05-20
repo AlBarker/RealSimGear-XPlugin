@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealSimGear-XPlugin", "RealSimGear-XPlugin\RealSimGear-XPlugin.csproj", "{F92E5C2B-6A17-4AEA-8CE3-19E108DABB22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealSimGear.XPlugin", "RealSimGear-XPlugin\RealSimGear.XPlugin.csproj", "{F92E5C2B-6A17-4AEA-8CE3-19E108DABB22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealSimGear.ArduinoTester", "ArduinoTester\RealSimGear.ArduinoTester.csproj", "{239C97B5-AD92-4EE1-BB9B-4F2AC14830BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{F92E5C2B-6A17-4AEA-8CE3-19E108DABB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F92E5C2B-6A17-4AEA-8CE3-19E108DABB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F92E5C2B-6A17-4AEA-8CE3-19E108DABB22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{239C97B5-AD92-4EE1-BB9B-4F2AC14830BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{239C97B5-AD92-4EE1-BB9B-4F2AC14830BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{239C97B5-AD92-4EE1-BB9B-4F2AC14830BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{239C97B5-AD92-4EE1-BB9B-4F2AC14830BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D07562F6-3C09-4094-945A-6F8602AF21EB}
 	EndGlobalSection
 EndGlobal
