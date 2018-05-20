@@ -1,4 +1,26 @@
+#define ENCODER_OPTIMIZE_INTERRUPTS
+#include <Encoder.h>
+#include <Bounce2.h>
 
+Bounce buttonCDI = Bounce(32,5);
+
+Encoder navFine = Encoder(53, 52); //GPS1 Nav Freq Fine
+Encoder navCoarse = Encoder(51, 50); //GPS1 Nav Freq Fine
+Encoder Chapter = Encoder(31, 30); //GPS1 Chapter Up/Dn
+Encoder Page = Encoder(47, 46); //GPS1 Page Up/Dn
+
+//variables
+long encoderNavFine_prev=0;  //for detecting rotary position change
+long encoderNavCoarse_prev=0;  //for detecting rotary position change
+long encoderChapter_prev=0;  //for detecting rotary position change
+long encoderPage_prev=0;  //for detecting rotary position change
+
+long positionLeft = -999;
+
+int NavFreqFine = 900;
+int NavFreqCoarse = 115;
+int eChapter = 0;
+int ePage = 0;
 
 void setup() {
   // initialize the button pin as a input:
@@ -18,7 +40,7 @@ void setup() {
   pinMode(45, INPUT_PULLUP);
   pinMode(48, INPUT_PULLUP);
   pinMode(49, INPUT_PULLUP);
-  
+ 
   // initialize the LED as an output:
   pinMode(13, OUTPUT);
   // initialize serial communication:
@@ -27,83 +49,129 @@ void setup() {
 
 void loop() {
 
+//read the rotary encoder, if it's changed, wite to output var
+
+long encNavFine = navFine.read();
+encNavFine = encNavFine/2; //to deal with 1/2 cycle encoder hardware
+if (encNavFine != encoderNavFine_prev) {
+  NavFreqFine = NavFreqFine + (encNavFine - encoderNavFine_prev);
+  encoderNavFine_prev = encNavFine;
+  Serial.print("Encoder Nav Freq Fine ");
+  Serial.print(NavFreqFine);
+  Serial.print("\n");
+}
+
+//read the rotary encoder, if it's changed, wite to output var
+long encNavCoarse = navCoarse.read();
+encNavCoarse = encNavCoarse/2; //to deal with 1/2 cycle encoder hardware
+if (encNavCoarse != encoderNavCoarse_prev) {
+  NavFreqCoarse = NavFreqCoarse + (encNavCoarse - encoderNavCoarse_prev);
+  encoderNavCoarse_prev = encNavCoarse;
+  Serial.print("Encoder Nav Freq Coarse ");
+  Serial.print(NavFreqCoarse);
+  Serial.print("\n");
+}
+
+//read the rotary encoder, if it's changed, wite to output var
+long encChapter = Chapter.read();
+encChapter = encChapter/2; //to deal with 1/2 cycle encoder hardware
+if (encChapter != encoderChapter_prev) {
+  eChapter = eChapter + (encChapter - encoderChapter_prev);
+  encoderChapter_prev = encChapter;
+  Serial.print("Encoder Chapter ");
+  Serial.print(eChapter);
+  Serial.print("\n");
+}
+
+//read the rotary encoder, if it's changed, wite to output var
+long encPage = Page.read();
+encPage = encPage/2; //to deal with 1/2 cycle encoder hardware
+if (encPage != encoderPage_prev) {
+  ePage = ePage + (encPage - encoderPage_prev);
+  encoderPage_prev = encPage;
+  Serial.print("Encoder Page ");
+  Serial.print(ePage);
+  Serial.print("\n");
+}
+
+
     if ((digitalRead(32)) == LOW) {
-      Serial.println("GPS1_PROC");
+      Serial.print("sim/GPS/g430n1_proc");
       Serial.print("\n");
       delay(250);
     } else {
         if ((digitalRead(33)) == LOW) {
-          Serial.println("GPS1_CDI");
+          Serial.print("sim/GPS/g430n1_cdi");
           Serial.print("\n");
           delay(250);
         } else {
           if ((digitalRead(34)) == LOW) {
-            Serial.println("GPS1_FPL");
+            Serial.print("sim/GPS/g430n1_fpl");
             Serial.print("\n");
             delay(250);
           } else {
             if ((digitalRead(35)) == LOW) {
-              Serial.println("GPS1_VNAV");
+              Serial.print("sim/GPS/g430n1_vnav");
               Serial.print("\n");
               delay(250);
             } else {
               if ((digitalRead(36)) == LOW) {
-                Serial.println("GPS1_OBS");
+                Serial.print("sim/GPS/g430n1_obs");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(37)) == LOW) {
-                Serial.println("GPS1_MSG");
+                Serial.print("sim/GPS/g430n1_msg");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(38)) == LOW) {
-                Serial.println("GPS1_NAV_FLIP");
+                Serial.print("sim/GPS/g430n1_nav_ff");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(39)) == LOW) {
-                Serial.println("GPS1_COM_FLIP");
+                Serial.print("sim/GPS/g430n1_com_ff");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(40)) == LOW) {
-                Serial.println("GPS1_ZOOM_IN");
+                Serial.print("sim/GPS/g430n1_zoom_in");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(41)) == LOW) {
-                Serial.println("GPS1_ZOOM_OUT");
+                Serial.print("sim/GPS/g430n1_zoom_out");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(42)) == LOW) {
-                Serial.println("GPS1_MENU");
+                Serial.print("sim/GPS/g430n1_menu");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(43)) == LOW) {
-                Serial.println("GPS1_DIRECT");
+                Serial.print("sim/GPS/g430n1_direct");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(44)) == LOW) {
-                Serial.println("GPS1_ENTER");
+                Serial.print("sim/GPS/g430n1_ent");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(45)) == LOW) {
-                Serial.println("GPS1_CLR");
+                Serial.print("sim/GPS/g430n1_clr");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(48)) == LOW) {
-                Serial.println("GPS1_PUSH_CSR");
+                Serial.print("sim/GPS/g430n1_cursor");
                 Serial.print("\n");
                 delay(250);
             } else {
               if ((digitalRead(49)) == LOW) {
-                Serial.println("GPS1_NAV/COM_TOGGLE_ACTIVE");
+                Serial.print("sim/GPS/g430n1_nav_com_tog");
                 Serial.print("\n");
                 delay(250);
             }

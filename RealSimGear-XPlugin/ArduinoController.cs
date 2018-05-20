@@ -62,7 +62,7 @@ namespace RealSimGear.XPlugin
                 }
                 //currentPort.name = returnMessage;
                 currentPort.Close();
-                if (returnMessage.Contains("HELLO FROM ARDUINO"))
+                if (returnMessage.Contains("0"))
                 {
                     Console.WriteLine("Arduino says: " + returnMessage);
                     return true;
