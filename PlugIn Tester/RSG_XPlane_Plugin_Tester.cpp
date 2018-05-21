@@ -2,6 +2,7 @@
 
 
 #include "XPLMMenus.h"
+#include "XPLMDataAccess.h"
 #include <string.h>
 #if IBM
 	#include <windows.h>
@@ -10,6 +11,8 @@
 #ifndef XPLM300
 	#error This is made to be compiled against the XPLM300 SDK
 #endif
+
+static XPLMDataRef		gDataRef = NULL;
 
 int g_menu_container_idx; // The index of our menu item in the Plugins menu
 XPLMMenuID g_menu_id; // The menu container we'll append all our menu items to
@@ -42,6 +45,15 @@ PLUGIN_API int XPluginStart(
 	XPLMAppendMenuItem(g_menu_id, "Press GPS1 ENTER", (void *)"ENT", 1);
 	XPLMAppendMenuItem(g_menu_id, "Press GPS1 Nav/Com Toggle", (void *)"TOG", 1);
 	XPLMAppendMenuItem(g_menu_id, "Press GPS1 PUSH CSR", (void *)"CSR", 1);
+	XPLMAppendMenuSeparator(g_menu_id);
+	XPLMAppendMenuItem(g_menu_id, "Turn Freq Knob Coarse +", (void *)"freqCoarse+", 1);
+	XPLMAppendMenuItem(g_menu_id, "Turn Freq Knob Coarse -", (void *)"freqCoarse-", 1);
+	XPLMAppendMenuItem(g_menu_id, "Turn Freq Knob Fine +", (void *)"freqFine+", 1);
+	XPLMAppendMenuItem(g_menu_id, "Turn Chapter Knob +", (void *)"chapter+", 1);
+	XPLMAppendMenuItem(g_menu_id, "Turn Chapter Knob -", (void *)"chapter-", 1);
+	XPLMAppendMenuItem(g_menu_id, "Turn Page Knob +", (void *)"page+", 1);
+	XPLMAppendMenuItem(g_menu_id, "Turn Page Knob -", (void *)"page-", 1);
+
 	
 	
 	// Changed your mind? You can destroy the submenu you created with XPLMDestroyMenu(),
@@ -134,5 +146,37 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	else if (!strcmp((const char *)in_item_ref, "CSR"))
 	{
 		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_cursor"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "freqCoarse+"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_coarse_up"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "freqCoarse-"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_coarse_down"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "freqFine+"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_fine_up"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "freqFine-"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_fine_down"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "chapter+"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_chapter_up"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "chapter-"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_chapter_down"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "page+"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_page_up"));
+	}
+	else if (!strcmp((const char *)in_item_ref, "page-"))
+	{
+		XPLMCommandOnce(XPLMFindCommand("sim/GPS/g430n1_page_down"));
 	}
 }

@@ -23,6 +23,8 @@ int eChapter = 0;
 int ePage = 0;
 
 void setup() {
+
+  
   // initialize the button pin as a input:
   pinMode(32, INPUT_PULLUP);
   pinMode(33, INPUT_PULLUP);
@@ -51,46 +53,57 @@ void loop() {
 
 //read the rotary encoder, if it's changed, wite to output var
 
+int efDelta = 0;
 long encNavFine = navFine.read();
 encNavFine = encNavFine/2; //to deal with 1/2 cycle encoder hardware
 if (encNavFine != encoderNavFine_prev) {
-  NavFreqFine = NavFreqFine + (encNavFine - encoderNavFine_prev);
+ // NavFreqFine = NavFreqFine + (encNavFine - encoderNavFine_prev);
+ efDelta = encNavFine - encoderNavFine_prev;
   encoderNavFine_prev = encNavFine;
   Serial.print("Encoder Nav Freq Fine ");
-  Serial.print(NavFreqFine);
+  Serial.print(efDelta);
   Serial.print("\n");
 }
 
 //read the rotary encoder, if it's changed, wite to output var
+int ncDelta = 0;
 long encNavCoarse = navCoarse.read();
 encNavCoarse = encNavCoarse/2; //to deal with 1/2 cycle encoder hardware
+
 if (encNavCoarse != encoderNavCoarse_prev) {
-  NavFreqCoarse = NavFreqCoarse + (encNavCoarse - encoderNavCoarse_prev);
+  //NavFreqCoarse = NavFreqCoarse + (encNavCoarse - encoderNavCoarse_prev);
+  ncDelta = encNavCoarse - encoderNavCoarse_prev;
   encoderNavCoarse_prev = encNavCoarse;
   Serial.print("Encoder Nav Freq Coarse ");
-  Serial.print(NavFreqCoarse);
+  Serial.print(ncDelta);
   Serial.print("\n");
 }
 
 //read the rotary encoder, if it's changed, wite to output var
+int chapDelta = 0;
 long encChapter = Chapter.read();
 encChapter = encChapter/2; //to deal with 1/2 cycle encoder hardware
+
 if (encChapter != encoderChapter_prev) {
-  eChapter = eChapter + (encChapter - encoderChapter_prev);
+ // eChapter = eChapter + (encChapter - encoderChapter_prev);
+  chapDelta = encChapter - encoderChapter_prev;
   encoderChapter_prev = encChapter;
   Serial.print("Encoder Chapter ");
-  Serial.print(eChapter);
+  Serial.print(chapDelta);
   Serial.print("\n");
 }
 
 //read the rotary encoder, if it's changed, wite to output var
+int pageDelta = 0;
 long encPage = Page.read();
 encPage = encPage/2; //to deal with 1/2 cycle encoder hardware
+
 if (encPage != encoderPage_prev) {
-  ePage = ePage + (encPage - encoderPage_prev);
+  //ePage = ePage + (encPage - encoderPage_prev);
+  pageDelta = encPage - encoderPage_prev;
   encoderPage_prev = encPage;
   Serial.print("Encoder Page ");
-  Serial.print(ePage);
+  Serial.print(pageDelta);
   Serial.print("\n");
 }
 
