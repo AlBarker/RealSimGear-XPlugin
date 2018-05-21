@@ -6,10 +6,12 @@ namespace RealSimGear.XPlugin
 {
     public class ArduinoController : IDeviceController
     {
-
-        SerialPort currentPort;
+        static SerialPort currentPort;
         bool portFound;
-        public void SetComPort()
+        static bool _continue;
+
+        #region Exposed Methods
+        public void InitiateConnection()
         {
             try
             {
@@ -35,47 +37,67 @@ namespace RealSimGear.XPlugin
             catch (Exception e)
             {
             }
-        }
-        private bool DetectArduino()
+        } 
+
+        public void BeginReading()
         {
-            try
+            string name;
+            string message;
+            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
+            Thread readThread = new Thread(Read);
+            
+
+            if (currentPort == null || !portFound)
             {
-                //The below setting are for the Hello handshake
-                byte[] buffer = new byte[5];
-                buffer[0] = Convert.ToByte(16);
-                buffer[1] = Convert.ToByte(128);
-                buffer[2] = Convert.ToByte(0);
-                buffer[3] = Convert.ToByte(0);
-                buffer[4] = Convert.ToByte(4);
-                int intReturnASCII = 0;
-                char charReturnValue = (Char)intReturnASCII;
-                currentPort.Open();
-                currentPort.Write(buffer, 0, 5);
-                Thread.Sleep(1000);
-                int count = currentPort.BytesToRead;
-                string returnMessage = "";
-                while (count > 0)
+                throw new NullReferenceException("Port has not been initialised");
+            }
+
+            currentPort.Open();
+            _continue = true;
+            readThread.Start();
+
+            while (_continue)
+            {
+                message = Console.ReadLine();
+
+                if (stringComparer.Equals("quit", message))
                 {
-                    intReturnASCII = currentPort.ReadByte();
-                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
-                    count--;
-                }
-                //currentPort.name = returnMessage;
-                currentPort.Close();
-                if (returnMessage.Contains("0"))
-                {
-                    Console.WriteLine("Arduino says: " + returnMessage);
-                    return true;
+                    _continue = false;
                 }
                 else
                 {
-                    return false;
+                    currentPort.WriteLine(
+                        String.Format("<{0}>: {1}", message));
                 }
             }
-            catch (Exception e)
+
+            readThread.Join();
+            currentPort.Close();
+        }
+        #endregion
+
+        private static void Read()
+        {
+            while (_continue)
             {
-                return false;
+                try
+                {
+                    string message = currentPort.ReadLine();
+                    Console.WriteLine(message);
+                }
+                catch (TimeoutException)
+                {
+
+                }
             }
         }
+        
+        #region Helper Methods
+        private bool DetectArduino()
+        {
+            // TODO add some sort of connection handshake
+            return true;
+        }
+        #endregion
     }
 }

@@ -6,6 +6,7 @@ namespace RealSimGear.XPlugin
 {
     public interface IDeviceController
     {
-        void SetComPort();
+        void InitiateConnection();
+        void BeginReading();
     }
 }

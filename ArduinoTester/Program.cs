@@ -10,8 +10,11 @@ namespace ArduinoTester
             IDeviceController deviceController = new ArduinoController();
 
             Console.WriteLine("Trying to detect Arduino...");
-            deviceController.SetComPort();
+            deviceController.InitiateConnection();
             Console.WriteLine("Detecting Arduino finished");
+
+            Console.WriteLine("Beginning to read from Arduino");
+            deviceController.BeginReading();
             Console.Read();
 
         }
