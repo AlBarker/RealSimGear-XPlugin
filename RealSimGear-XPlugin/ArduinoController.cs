@@ -45,7 +45,6 @@ namespace RealSimGear.XPlugin
             string message;
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             Thread readThread = new Thread(Read);
-            
 
             if (currentPort == null || !portFound)
             {
@@ -84,6 +83,7 @@ namespace RealSimGear.XPlugin
                 {
                     string message = currentPort.ReadLine();
                     Console.WriteLine(message);
+                    PluginAdapter.SendXplaneCommand(message);
                 }
                 catch (TimeoutException)
                 {
